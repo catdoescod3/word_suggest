@@ -30,7 +30,7 @@ void enable_raw_mode()
     atexit(disable_raw_mode);
 
     termios raw = original_terminal_settings;
-    raw.c_lflag &= ~(ECHO | ICANON | ISIG | IEXTEN);
+    raw.c_lflag &= ~(ICANON | ISIG | IEXTEN);
     raw.c_iflag &= ~(BRKINT | INPCK | ISTRIP | IXON | ICRNL);
     raw.c_cflag |= CS8;
     raw.c_cc[VMIN] = 0;
@@ -57,7 +57,7 @@ bool process_key_press()
 
     switch (key)
     {
-        case 'q': return false;
+        case 'q': return false; break;
     }
 
     return true;
@@ -74,14 +74,6 @@ void process_suffixes(suffix_search_result results)
 int main()
 {
     suffix_engine suffix_engine(process_suffixes);
-
     while (true)
-    {
-        std::string word;
-        std::cin >> word;
-        suffix_engine.add_word(word);
-        suffix_engine.search(word);
-    }
-
-    std::cin.get();
+    {}
 }
