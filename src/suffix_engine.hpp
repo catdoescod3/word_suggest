@@ -3,6 +3,7 @@
 
 #include "trie.hpp"
 #include <condition_variable>
+#include <deque>
 #include <mutex>
 #include <string>
 #include <thread>
@@ -24,16 +25,31 @@ class suffix_engine
     suffix_engine(const suffix_engine&) = delete;
     suffix_engine& operator=(const suffix_engine&) = delete;
 
+    void add_word(std::string word);
     void search(const std::string& prefix);
 
     private:
     void thread_main();
+
+    enum class task_type
+    {
+        add_word,
+        search,
+        stop
+    };
+
+    struct task
+    {
+        task_type type;
+        std::string data;
+    };
 
     trie_node trie_root;
     std::string prefix;
 
     std::mutex mutex;
     std::condition_variable condition_variable;
+    std::deque<task> task_queue;
 
     bool stop_search;
     search_callback callback;

@@ -5,7 +5,8 @@
 suffix_engine::suffix_engine(search_callback _callback)
     : stop_search(false),
       callback(_callback),
-      engine_thread(&suffix_engine::thread_main, this)
+      engine_thread(&suffix_engine::thread_main, this),
+      trie_root('\0')
 {}
 
 suffix_engine::~suffix_engine()
@@ -19,16 +20,21 @@ suffix_engine::~suffix_engine()
     engine_thread.join();
 }
 
-void suffix_engine::search(const std::string& search_prefix)
+void suffix_engine::add_word(std::string word)
 {
-    if (search_prefix.empty())
-        return;
-
     {
         std::lock_guard<std::mutex> lock(mutex);
-        prefix = search_prefix;
+        task_queue.push_back({task_type::add_word, std::move(word)});
     }
+    condition_variable.notify_one();
+}
 
+void suffix_engine::search(const std::string& search_prefix)
+{
+    {
+        std::lock_guard<std::mutex> lock(mutex);
+        task_queue.push_back({task_type::search, std::move(search_prefix)});
+    }
     condition_variable.notify_one();
 }
 
@@ -36,20 +42,24 @@ void suffix_engine::thread_main()
 {
     while (true)
     {
-        suffix_search_result result;
+        task task;
         {
             std::unique_lock<std::mutex> lock(mutex);
-            condition_variable.wait(
-                lock, [&] { return stop_search || !prefix.empty(); });
-
-            if (stop_search)
-                return;
-
-            result.prefix = std::move(prefix);
-            prefix.clear();
+            condition_variable.wait(lock, [&] { return !task_queue.empty(); });
+            task = std::move(task_queue.front());
+            task_queue.pop_front();
         }
 
-        result.suffixes = trie_fetch_suffixes(trie_root, result.prefix);
-        callback(std::move(result));
+        switch (task.type)
+        {
+            case task_type::add_word: trie_root.add_word(task.data); break;
+            case task_type::search:
+            {
+                auto search_result = trie_root.fetch_suffixes(task.data);
+                callback({task.data, std::move(search_result)});
+                break;
+            }
+            case task_type::stop: return;
+        }
     }
 }

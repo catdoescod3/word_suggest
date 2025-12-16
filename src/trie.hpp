@@ -7,12 +7,14 @@
 
 struct trie_node
 {
-    char character;
-    std::array<trie_node*, 26> nodes;
-};
+    trie_node(char _character);
 
-void trie_add_word(trie_node& trie, const std::string& word);
-std::vector<std::string> trie_fetch_suffixes(trie_node& trie,
-                                             const std::string& prefix);
+    char character;
+    bool is_terminal;
+    std::array<trie_node*, 26> children;
+
+    void add_word(std::string& word);
+    std::vector<std::string> fetch_suffixes(const std::string& prefix);
+};
 
 #endif

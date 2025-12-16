@@ -74,6 +74,14 @@ void process_suffixes(suffix_search_result results)
 int main()
 {
     suffix_engine suffix_engine(process_suffixes);
-    suffix_engine.search("prefix");
+
+    while (true)
+    {
+        std::string word;
+        std::cin >> word;
+        suffix_engine.add_word(word);
+        suffix_engine.search(word);
+    }
+
     std::cin.get();
 }
