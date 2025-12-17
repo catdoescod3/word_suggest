@@ -12,6 +12,7 @@ struct suffix_search_result
 {
     std::string prefix;
     std::vector<std::string> suffixes;
+    std::uint64_t version = 0;
 };
 
 class suffix_engine
