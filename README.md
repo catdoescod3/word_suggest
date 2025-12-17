@@ -1,5 +1,9 @@
 # word_suggest
 
+
+https://github.com/user-attachments/assets/89b5c344-ad6d-4d47-9c7e-f5f2a988787e
+
+
 ## Build
 
 Requirements
