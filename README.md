@@ -37,6 +37,9 @@ The main components of this project are:
 2. Suffix engine
 3. Trie data structure
 
+<img width="542" height="523" alt="image" src="https://github.com/user-attachments/assets/2095503b-e481-4b55-866f-061b5b4900a7" />
+
+
 The UI is simple but demonstrates the capabilities of the engine. 
 You could attach the engine to any client needing this functionality.
 
