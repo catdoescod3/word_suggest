@@ -30,6 +30,9 @@ To add a word, simply type out the word and press **Enter**.
 When you start typing the same word again, it will appear in the list **below
 the input line**
 
+Use **Ctrl+Q** to exit the program. You cannot exit the program 
+by killing the process with **Ctrl+Q**
+
 ## Project Analysis
 
 The main components of this project are:
