@@ -37,6 +37,9 @@ The main components of this project are:
 2. Suffix engine
 3. Trie data structure
 
+The UI is simple but demonstrates the capabilities of the engine. 
+You could attach the engine to any client needing this functionality.
+
 The **suffix engine** acts as an interface for querying the trie via an 
 asynchronous callback. This design ensures a smooth UI by offloading 
 search work to a worker thread.
@@ -56,8 +59,7 @@ The algorithm for getting matching words is as follows:
 
 4. Combine the prefix with each suffix when rendering.
 
-The UI is simple but demonstrates the capabilities of the engine. 
-You could attach the engine to any client needing this functionality.
+<img width="403" height="441" alt="image" src="https://github.com/user-attachments/assets/606e285a-ab01-49f9-90a5-dc041b4fd2d5" />
 
 ## Pitfalls
 
