@@ -31,7 +31,7 @@ When you start typing the same word again, it will appear in the list **below
 the input line**
 
 Use **Ctrl+Q** to exit the program. You cannot exit the program 
-by killing the process with **Ctrl+Q**
+by killing the process with **Ctrl+C**
 
 ## Project Analysis
 
